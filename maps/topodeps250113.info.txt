@@ -1,0 +1,5 @@
+- shapefile provenant de http://professionnels.ign.fr/geofla#tab-3
+- converti avec ogr2ogr (part of GDAL)
+ ogr2ogr -f "GeoJSON" -s_srs "EPSG:2154" -t_srs "WGS84" output.json departement.shp
+- converti en topojson 
+$ topojson -o topodeps.json departements.json
