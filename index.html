@@ -2,45 +2,34 @@
 <meta charset="utf-8">
 <head>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
-	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-
 </head>
 
 <body>
 
-<div id="wrapper">
-	<section id='controls' class="btn-group anneePicker">
-		<button class="btn year_btn btn-small" id="1996">1996</button>
-		<button class="btn year_btn btn-small" id="1997">1997</button>
-		<button class="btn year_btn btn-small" id="1998">1998</button>
-		<button class="btn year_btn btn-small" id="1999">1999</button>
-		<button class="btn year_btn btn-small" id="2000">2000</button>
-		<button class="btn year_btn btn-small" id="2001">2001</button>
-		<button class="btn year_btn btn-small" id="2002">2002</button>
-		<button class="btn year_btn btn-small" id="2003">2003</button>
-		<button class="btn year_btn btn-small" id="2004">2004</button>
-		<button class="btn year_btn btn-small" id="2005">2005</button>
-		<button class="btn year_btn btn-small" id="2006">2006</button> 
-		<button class="btn year_btn btn-small" id="2007">2007</button>
-		<button class="btn year_btn btn-small" id="2008">2008</button>
-		<button class="btn year_btn btn-small" id="2009">2009</button> 
-		<button class="btn year_btn btn-small" id="2010">2010</button>
-		<button class="btn year_btn btn-small" id="2011">2011</button>
-		<button class="btn year_btn btn-small" id="2012">2012</button>
+<div id="wrap" class='group'>
+	<section id='controls' class="btn-group anneePicker group">
+		<ul class='play_pause'>
+			<li class='play'>&#9658;</li><li class='pause'>&#10074; &#10074;</li>
+		</ul>
+		<ul class='year_select'>
+			<li id="1996">1996</li><li id="1997">1997</li><li id="1998">1998</li><li id="1999">1999</li><li id="2000">2000</li><li id="2001">2001</li><li id="2002">2002</li><li id="2003">2003</li><li id="2004">2004</li><li id="2005">2005</li><li id="2006">2006</li><li id="2007">2007</li><li id="2008">2008</li><li id="2009">2009</li><li id="2010">2010</li><li id="2011">2011</li><li id="2012">2012</li><li id="2013">2013</li>
+		</ul>
+		<ul class='type_select'>
+			<li id='monde'>Pays d'origine</li><li id='france'>Ville de destination</li>
+		</ul>
+		<div id='more_symbols'>
+			<input type="checkbox" name="missions" value="missions">Missions
+			<input type="checkbox" name="formations" value="formations">Formations
+		</div>
 
-		<div class="btn-group annee-defil">
- 			<button class="btn btn-large" id="previous"> < </button> 
- 			<button class="btn btn-large" id="next"> > </button>
- 		</div><!-- btn-group -->
- 		<div class="year">2000</div>
- 		<div class="total-annee">135 enfants pris en charge</div>
- 		<div class="cumul">Cumul : 1 324 enfants</div>
 	</section>
 
-	<section id="map"> 
+	<section id="map">
+		<div id='map-placeholder'></div>
 	</section><!-- MAP - ex graph -->
 
-	<section id="info">	
+	<section id="info">
+		<div id='info-placeholder'></div>
 	</section> <!-- INFO - ex - detail -->
 
 </div> <!-- wrapper -->
@@ -60,6 +49,7 @@
 <!-- app libraries -->
 
 <!-- app views -->
+<script src="js/views/ControlsView.js"></script>
 
 <!-- app views -->
 <script src="js/app.js"></script>

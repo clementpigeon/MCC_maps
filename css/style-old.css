@@ -1,0 +1,89 @@
+.country, .dep {
+  fill: #999;
+  stroke: white;
+}
+.deps {
+  stroke: black;
+  fill: none;
+}
+
+svg {
+	border: 1px solid #C5C5C5;
+  border-radius: 5px;
+}
+
+circle, symbol {
+	/*pointer-events:none;*/
+	fill: red;
+	stroke: black;
+	opacity: 0.5;
+}
+
+.mcc {
+	fill: #666;
+}
+
+
+.labels {
+	font-size: 10px;
+	font-family: Verdana;
+	text-align: center;
+	pointer-events: none;
+}
+
+.pays_popup {
+	position: absolute;
+	background: white;
+	color: black;
+	padding: 6px;
+	border-radius: 3px;
+	pointer-events: none;
+}
+#wrapper {
+	margin: 0px auto;
+	width: 972px;
+	position: relative;
+}
+#detail {
+ 	border: 1px solid #C5C5C5;
+	border-radius: 5px;
+	position: absolute;
+	right: 0px;
+	top: 50px;
+	width: 262px;
+	height: 500px;
+}
+
+.anneePicker {
+	margin: 10px 0px;
+}
+.btn-group.annee-defil {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+.year {
+	font-size: 50px;
+	position: absolute;
+	top: 25px;
+	right: 130px;
+	/*padding-right: 50px;*/
+}
+.total-annee {
+	position: absolute;
+	font-size: 18px;
+	top: 70px;
+	left: 20px;
+	/*text-align: left;*/
+}
+.cumul {
+	position: absolute;
+	font-size: 18px;
+	top: 100px;
+	left: 20px;
+	/*text-align: left;*/
+}
+.topodeps {
+	fill: #C5C5C5;
+	stroke: none;
+}
