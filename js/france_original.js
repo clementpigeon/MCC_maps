@@ -1,52 +1,41 @@
-
-
-//créer le SVG
 var width = 700,
     height = 500;
 
 // échelle pour le rayon des cercles
 var rScale = d3.scale.linear()
-  .domain([0, 1, 40])
-  .rangeRound([0, 6, 45]);
+  .domain([0, 1, 50])
+  .rangeRound([0, 6, 20]);
 
-// définir la projection et le path generator pour la carte
+// définit la projection et le path generator pour la carte
 var projection = d3.geo.kavrayskiy7()
-.scale(200)
-.translate([width / 2-100, height / 2+40]);
+.scale(2400)
+.center([+46.995241,+2.449951])
+.translate([width / 2 +1550, height / 2 +1830]);
 
 var pathGenerator = d3.geo.path().projection(projection);
 
-// créer le svg
+// crée le svg
 var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-// charger asynchronously le topoJSON et le CSV
+// charge asynchronously le topoJSON et le CSV
 queue()
-.defer(d3.json, "maps/world-50m.json")
-.defer(d3.csv, "data/mcc1.csv")
+.defer(d3.json, "world-50m.json")
+.defer(d3.json, "data.json")
 .await(ready);
 
 // fonction principale, appelée quand les fichiers sont chargés
 function ready (error, topojsonWorld, mccdata) {
-    var currentYear = 1995;
-  // décoder le topojson en geojson
+  var currentYear = 1995;
+  // décode le topojson en geojson
   var geojsonWorld = topojson.object(topojsonWorld, topojsonWorld.objects.countries).geometries;
-  // classer le mccdata par id
-  mccdata = mccdata.sort(function(a, b){
-      return a.id - b.id ;
-    });
+  // classe le mccdata par id?
 
-  svg.selectAll(".country")
+  svg.selectAll(".country") 
     .data(geojsonWorld)
   .enter().append("path")
-    .attr("class", function(country) {
-      var classes = "country " + country.id;
-      mccdata.forEach(function(mccCountry){
-        if (country.id == mccCountry.id){
-        classes += " mcc";
-      }});
-      return classes; })
+    .attr("class", "country")
     .attr("d", pathGenerator);
 
     // créer geojsonMcc et le trier dans l'ordre des id
@@ -64,21 +53,29 @@ function ready (error, topojsonWorld, mccdata) {
     return a.id - b.id ;
   });
 
+
  function init(){
-  svg.selectAll(".symbol")
-      .data(mccdata)
-    .enter().append("svg:circle")
-      .attr("class", "symbol")
-      .attr("cx", function(d, i) {
-        return Math.round(pathGenerator.centroid(geojsonMcc[i])[0]);
+
+
+  svg.append("svg:g").selectAll(".symbol")
+    .data(mccdata)
+   .enter().append("svg:circle")
+    .attr("class", "symbol")
+    .attr("cx", function(d, i) { 
+        var coord = projection([+d.lng, +d.lat]);
+       return Math.round(coord[0]);
+       })
+      .attr("cy", function(d, i) { 
+        var coord = projection([+d.lng, +d.lat]);
+    //    console.log(Math.round(coord[0]));
+        return Math.round(coord[1]);
       })
-      .attr("cy", function(d, i) {
-        return Math.round(pathGenerator.centroid(geojsonMcc[i])[1]);
-        })
+      .attr("r", 0 /*function(d) { return rScale(d[year]);}*/)
       .on("mouseover", hover)
-      .on("mouseout", function(){
-        $('.pays_popup').remove();
-      });
+     .on("mouseout", function(){
+       $('.pays_popup').remove();
+     });
+
   }
 
   function hover(d){   //le datum est passé en d
@@ -86,7 +83,7 @@ function ready (error, topojsonWorld, mccdata) {
       var x = parseInt($(this).attr("cx"))+15;
       // x = x+10;
       var y = parseInt($(this).attr("cy")) -15;
-      $tooltip.html("<b>" + d.pays + "</b><br />" + d[currentYear] + " enfants");
+      $tooltip.html("<b>" + d.Hopital + ", "+ d.Ville+ "</b><br />" + d[currentYear] + " enfants");
 
       $('#wrapper').append($tooltip);
       $tooltip.css("left", x+"px");
@@ -96,26 +93,23 @@ function ready (error, topojsonWorld, mccdata) {
 
 
  function update(year){
-  $(".year").fadeOut(300, function(){
-      $(this).html(currentYear).fadeIn(400);
-    });
-
+ 
   $(".btn").removeClass("btn-danger");
-  $(".btn#"+year).addClass("btn-danger");
+  $(".btn#" + year).addClass("btn-danger");
 
-  svg.selectAll(".symbol").transition()
+  svg.selectAll(".symbol").transition()//.delay(400)
     .duration(400)
-    .attr("r", 0);
-
-  svg.selectAll(".symbol").transition().delay(400)
-    .duration(400)
-    .attr("r", function(d) { return rScale(d[year]);});
+    .attr("r", function(d) { return rScale(d[year]);})
+    .attr("style", function(d){ 
+        var zindex = 150-d[year];
+        return "position:relative;z-index:"+ zindex;
+      });
 
   svg.selectAll(".labels").transition().delay(200)
   .text('')
   .transition().delay(400)
   .text(function(d){return d[year];})
-
+  
 
   }
 
@@ -141,12 +135,12 @@ function ready (error, topojsonWorld, mccdata) {
 
   };
 
-  // function play (){
-  //   setInterval(next, 2000);
-  // }
+  function play (){
+    setInterval(next, 2000);
+  }
 
   init();
-
+  play();
   $("#next").click(next);
   $("#previous").click(previous);
 
@@ -155,3 +149,4 @@ function ready (error, topojsonWorld, mccdata) {
     update(currentYear);
   });
 }
+  

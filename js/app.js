@@ -1,25 +1,107 @@
-var app = new Marionette.Application();
+var App = new Marionette.Application();
 
-app.addRegions({
+App.addRegions({
     "controls": "#controls",
     "map": "#map",
     "info": "#info"
 });
 
-app.controls.show(new ControlsView());
-// app.controls.show(new ControlsView());
 
-// App.module("SampleModule", function(Mod, App, Backbone, Marionette, $, _){
 
-//     // Define a view to show
-//     // ---------------------
+App.module('Controls', function(Controls, App, Backbone, Marionette, $, _){
 
-//     var MainView = Marionette.ItemView.extend({
-//         template: "#sample-template"
-//     });
+	var ControlsView = Marionette.ItemView.extend({
+		template: '#template-controls',
+		
+		ui: {
 
-//     // Define a controller to run this module
-//     // --------------------------------------
+		},
+		year: '1996',
+
+		events: {
+			'click .year_select li': 'clickYear',
+			'click .play': 'play',
+			'click .pause': 'pause',
+
+			'click .type_select .monde': 'showMonde',
+			'click .type_select .france': 'showFrance',
+
+			'click .more_symbols .missions': 'toggleMissions',
+			'click .more_symbols .formations': 'toggleFormations',
+		},
+
+		clickYear: function(event){
+			this.year = $(event.currentTarget).html();
+			App.vent.trigger('year:change');
+		},
+
+		play: function(event){
+			console.log('play');
+		},
+
+		pause: function(event){
+			console.log('pause');
+		},
+
+		showMonde: function(event){
+			console.log('show Monde');
+		},
+
+		showFrance: function(event){
+			console.log('show France');
+		},
+
+		toggleMissions: function(event){
+			var missionsState = event.currentTarget.checked;
+			console.log('display Missions: ' + missionsState);
+		},
+
+		toggleFormations: function(event){
+			var formationsState = event.currentTarget.checked;
+			console.log('display Missions: ' + formationsState);
+		},
+	});
+
+    var Controller = Marionette.Controller.extend({
+
+        initialize: function(options){
+            this.region = options.region;
+        },
+
+        show: function(){
+            var controlsView = new ControlsView({});
+            this.region.show(controlsView);
+        }
+    });
+
+    Controls.addInitializer(function(){
+	    Controls.controller = new Controller({
+	        region: App.controls
+	    });
+	    Controls.controller.show();
+	});
+});
+
+// App.module('Map', function(Map, App, Backbone, Marionette, $, _){
+
+// 	var MapView = Marionette.ItemView.extend({
+// 		template: '#map-template',
+		
+// 		ui: {
+
+// 		},
+
+// 		events: {
+// 			'click' : 'testClick'
+
+// 		},
+
+// 		testClick: function(event){
+// 			console.log('testClick');
+// 		}
+
+
+// 	});
 
 //     var Controller = Marionette.Controller.extend({
 
@@ -28,32 +110,105 @@ app.controls.show(new ControlsView());
 //         },
 
 //         show: function(){
-//             var model = new Backbone.Model({
-//                 contentPlacement: "here"
-//             });
-
-//             var view = new MainView({
-//                 model: model
-//             });
-
-//             this.region.show(view);
+//             var mapView = new MapView({});
+//             this.region.show(mapView);
 //         }
 
 //     });
 
-
-//     // Initialize this module when the app starts
-//     // ------------------------------------------
-
-//     Mod.addInitializer(function(){
-//         Mod.controller = new Controller({
-//             region: App.mainRegion
-//         });
-//         Mod.controller.show();
-//     });
+//     Map.addInitializer(function(){
+// 	    Map.controller = new Controller({
+// 	        region: App.map
+// 	    });
+// 	    Map.controller.show();
+// 	});
 // });
 
-// // Start the app
-// // -------------
+// App.module('CountryInfo', function(Map, App, Backbone, Marionette, $, _){
 
-App.start();
+// 	var CountryInfoView = Marionette.ItemView.extend({
+// 		template: '#info-template',
+		
+// 		ui: {
+
+// 		},
+
+// 		events: {
+// 			'click' : 'testClick'
+
+// 		},
+
+// 		testClick: function(event){
+// 			console.log('testClick');
+// 		}
+
+
+// 	});
+
+//     var Controller = Marionette.Controller.extend({
+
+//         initialize: function(options){
+//             this.region = options.region
+//         },
+
+//         show: function(){
+//             var countryInfoView = new CountryInfoView({});
+//             this.region.show(countryInfoView);
+//         }
+
+//     });
+
+//     Map.addInitializer(function(){
+// 	    Map.controller = new Controller({
+// 	        region: App.info
+// 	    });
+// 	    Map.controller.show();
+// 	});
+// });
+
+
+App.module('Main', function(Main, App, Backbone, Marionette, $, _){
+
+	Main.Controller = function(){
+		// load data
+		this.data = [];
+		this.currentYear = 1996;
+	};
+
+	_.extend(Main.Controller.prototype, {
+		//start the app by showing the appropriate views
+		start: function(){
+			// this.showControls();
+			// this.showMap(data);
+		},
+
+		// showControls: function(){
+		// 	var controlsView = new ControlsView();
+		// 	App.controls.show(controlsView);
+		// },
+
+		// showMap: function(data){
+		// 	var mapView = new mapView();
+		// 	App.controls.show(mapView);
+		// },
+
+		// showCountryInfo: function(country){
+		// 	App.main.show(new TodoList.Views.ListView({
+		// 		model: country
+		// 	}))
+		// },
+
+	});
+
+	// TodoList initializer
+	// get the todolist up and running by initializing the mediator
+	// when the app is started, pulling in existing todos and displaying them
+
+	Main.addInitializer(function(){
+		this.controller = new Main.Controller();
+		this.controller.start();
+	})
+
+});
+
+
