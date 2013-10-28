@@ -17,6 +17,8 @@ App.module('Controls', function(Controls, App, Backbone, Marionette, $, _){
 
 		},
 		year: '1996',
+		play: true,
+
 
 		events: {
 			'click .year_select li': 'clickYear',
@@ -31,7 +33,7 @@ App.module('Controls', function(Controls, App, Backbone, Marionette, $, _){
 		},
 
 		clickYear: function(event){
-			this.year = $(event.currentTarget).html();
+			App.controls.year = $(event.currentTarget).html();
 			App.vent.trigger('year:change');
 		},
 
@@ -62,6 +64,8 @@ App.module('Controls', function(Controls, App, Backbone, Marionette, $, _){
 		},
 	});
 
+
+
     var Controller = Marionette.Controller.extend({
 
         initialize: function(options){
@@ -75,6 +79,7 @@ App.module('Controls', function(Controls, App, Backbone, Marionette, $, _){
     });
 
     Controls.addInitializer(function(){
+    	Controls.year = '1996';
 	    Controls.controller = new Controller({
 	        region: App.controls
 	    });

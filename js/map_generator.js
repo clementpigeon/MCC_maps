@@ -78,7 +78,7 @@ function setupFranceMap(){
 
 
 
-function hover(d){   //le datum est passé en d
+function XXhover(d){   //le datum est passé en d
 
   var $tooltip = $("<div class='pays_popup'></div>");
   var x = parseInt($(this).attr("cx")) + 15;
