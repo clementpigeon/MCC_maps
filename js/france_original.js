@@ -1,3 +1,5 @@
+
+console.log("france250113-carte-monde.js");
 var width = 700,
     height = 500;
 
@@ -15,18 +17,19 @@ var projection = d3.geo.kavrayskiy7()
 var pathGenerator = d3.geo.path().projection(projection);
 
 // crée le svg
-var svg = d3.select("#map").append("svg")
+var svg = d3.select("#graph").append("svg")
     .attr("width", width)
     .attr("height", height);
 
 // charge asynchronously le topoJSON et le CSV
 queue()
-.defer(d3.json, "world-50m.json")
-.defer(d3.json, "data.json")
+.defer(d3.json, "maps/world-50m.json")
+.defer(d3.csv, "data/sites230113.csv")
 .await(ready);
 
 // fonction principale, appelée quand les fichiers sont chargés
 function ready (error, topojsonWorld, mccdata) {
+  console.log(JSON.stringify(mccdata));
   var currentYear = 1995;
   // décode le topojson en geojson
   var geojsonWorld = topojson.object(topojsonWorld, topojsonWorld.objects.countries).geometries;
@@ -76,6 +79,35 @@ function ready (error, topojsonWorld, mccdata) {
        $('.pays_popup').remove();
      });
 
+
+
+  // svg.selectAll(".symbol")
+  //   .data(mccdata)
+  //  .enter().append("svg:circle")
+  //   .attr("class", "symbol")
+  //   .attr("cx", function(d, i) { 
+  //     return Math.round(pathGenerator.centroid(geojsonMcc[i])[0]);
+  //     })
+  //   .attr("cy", function(d, i) { 
+  //     return Math.round(pathGenerator.centroid(geojsonMcc[i])[1]);
+  //     })
+  //   .on("mouseover", hover)
+  //   .on("mouseout", function(){
+  //     $('.pays_popup').remove();
+  //   });
+
+  // svg.selectAll(".labels")
+  //   .data(mccdata)
+  //  .enter().append("text")
+  //   .attr("class", "labels")
+  //   .attr("x", function(d, i) { 
+  //     return pathGenerator.centroid(geojsonMcc[i])[0] -3;
+  //     })
+  //   .attr("y", function(d, i) { 
+  //     return pathGenerator.centroid(geojsonMcc[i])[1] +4;
+  //     })
+  //   .attr("fill", "black");
+
   }
 
   function hover(d){   //le datum est passé en d
@@ -93,9 +125,19 @@ function ready (error, topojsonWorld, mccdata) {
 
 
  function update(year){
- 
+  $(".year").fadeOut(300, function(){
+      $(this).html(currentYear).fadeIn(400);
+    });
+  // $(".total-annee").fadeOut(300, function(){
+  //   //ne fonctionne pas . Comment faire pour avoir les totaux pour l'année et cumul ?
+  //     $(this).html(mccdata[""][currentYear]).fadeIn(400);
+  //   });  
   $(".btn").removeClass("btn-danger");
   $(".btn#" + year).addClass("btn-danger");
+
+  // svg.selectAll(".symbol").transition()
+  //   .duration(400)
+  //   .attr("r", 0);
 
   svg.selectAll(".symbol").transition()//.delay(400)
     .duration(400)

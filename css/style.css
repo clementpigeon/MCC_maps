@@ -44,6 +44,9 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+b {
+	font-weight: bold;
+}
 
 
 /* Layout  */
@@ -75,6 +78,13 @@ table {
 	display: table;
 }
 
+#controls ul li:not(.selected) {
+	cursor: pointer;
+}
+
+#controls ul li.selected {
+	cursor: default;
+}
 
 #controls ul.play_pause {
 	border: 1px solid black;
@@ -88,6 +98,8 @@ table {
 	display: inline-block;
 	padding: 8px;
 }
+
+
 
 #controls ul.year_select {
 	display: inline-block;
@@ -116,13 +128,17 @@ table {
 	margin: 0;
 }
 
-#more_symbols {
+.more_symbols {
 	margin-left: 12px;
 	display: inline-block;
 }
 
-#more_symbols input {
+.more_symbols input {
 	display: inline;
+}
+
+.selected {
+	background: rgba(256, 0, 0, 0.40);
 }
 
 
