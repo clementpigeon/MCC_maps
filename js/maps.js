@@ -219,7 +219,6 @@ App.module('Maps', function(Maps, App, Backbone, Marionette, $, _){
 		},
 
 		hoverPays: function (d){   //le datum est passé en d
-
 			view = App.Maps.controller.mapView;
 
 			var $tooltip = $("<div class='pays_popup'></div>");
@@ -248,9 +247,9 @@ App.module('Maps', function(Maps, App, Backbone, Marionette, $, _){
 			$('#map').append($tooltip);
 		},
 
-		displayCountryInfo: function (d){
-			console.log('display info for ' + d.id);
-			var country = new Country(d.id);
+		displayCountryInfo: function (datum){
+			console.log('display info for ' + datum.id);
+			var country = new Country(datum);
 			App.info.show(new CountryInfoBoxView({model: country}));
 
 		},
@@ -270,21 +269,26 @@ App.module('Maps', function(Maps, App, Backbone, Marionette, $, _){
 
 	
 	var Country = Backbone.Model.extend({
-		initialize: function(id){
-			this.data = countries[id];
+		initialize: function(datum){
+			this.set(datum);
+			this.set({
+				name: countries[datum.id].name,
+				flag_url: countries[datum.id].flag_url,
+				capitale: countries[datum.id].capitale,
+				langues: countries[datum.id].langues,
+				population_2011: countries[datum.id].population_2011,
+				total: countries[datum.id].total,
+			})
 		},
 	
 	});
 
 	var CountryInfoBoxView = Marionette.ItemView.extend({
 		initialize: function(){
-			this.country = this.model.data;
-			console.log(this.model);
+			// console.log(this.model);
 		},
 
 		template: '#info-template',
-
-	
 
 	});
 
