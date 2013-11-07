@@ -48,6 +48,10 @@ App.module('Controls', function(Controls, App, Backbone, Marionette, $, _){
 			App.controls.year = $(event.currentTarget).html();
 			App.vent.trigger('year:change');
 			this.selectedYear();
+			if (this.playInterval) {
+				clearInterval(this.playInterval);
+				this.play();
+			}
 		},
 
 		play: function(event){
